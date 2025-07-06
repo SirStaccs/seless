@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anatomy & Physiology Study Kit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .learning-profile {
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav-tab {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-tab.active {
+            background: #4CAF50;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .section {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .concept-map {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .concept-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .concept-card:hover {
+            transform: scale(1.05);
+        }
+
+        .concept-card h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .flowchart {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .flow-step {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .flow-step::after {
+            content: '→';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .flow-step:last-child::after {
+            display: none;
+        }
+
+        .quiz-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid #e9ecef;
+        }
+
+        .quiz-question {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .quiz-option {
+            padding: 12px 20px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .quiz-option:hover {
+            background: #e3f2fd;
+            border-color: #2196F3;
+        }
+
+        .quiz-option.correct {
+            background: #c8e6c9;
+            border-color: #4CAF50;
+        }
+
+        .quiz-option.incorrect {
+            background: #ffcdd2;
+            border-color: #f44336;
+        }
+
+        .system-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .system-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .system-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: #4CAF50;
+        }
+
+        .system-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .system-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .journal-area {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .journal-prompt {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .journal-input {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .score-display {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .flowchart {
+                flex-direction: column;
+            }
+            
+            .flow-step::after {
+                content: '↓';
+                right: 50%;
+                transform: translateX(50%);
+                top: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Your Personalized Anatomy & Physiology Study Kit</h1>
+            <div class="learning-profile">
+                <h3>📊 Your Learning Profile</h3>
+                <p><strong>Primary:</strong> Visual-Spatial - You excel in understanding concepts through visual representations and spatial relationships.</p>
+                <p><strong>Secondary:</strong> Intrapersonal - You benefit from reflection and personal connections to internalize concepts deeply.</p>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('concepts')">Core Concepts</button>
+            <button class="nav-tab" onclick="showSection('systems')">Body Systems</button>
+            <button class="nav-tab" onclick="showSection('quiz')">Visual Quiz</button>
+            <button class="nav-tab" onclick="showSection('journal')">Reflection Journal</button>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+
+        <div id="concepts" class="section active">
+            <h2>🧠 Core Visual Summaries</h2>
+            
+            <h3>1. Concept Map: Basic Cell Structure and Function</h3>
+            <div class="concept-map">
+                <div class="concept-card">
+                    <h3>Cell Membrane</h3>
+                    <p>Controls entry and exit of substances. Think of it as the cell's security guard, deciding what gets in and what stays out.</p>
+                </div>
+                <div class="concept-card">
+                    <h3>Nucleus</h3>
+                    <p>Contains genetic information (DNA). The cell's control center, like a computer's CPU directing all activities.</p>
+                </div>
+                <div class="concept-card">
+                    <h3>Mitochondria</h3>
+                    <p>Energy (ATP) production. The cell's power plant, converting nutrients into usable energy.</p>
+                </div>
+                <div class="concept-card">
+                    <h3>Metabolism</h3>
+                    <p>Chemical processes for energy, growth, and waste elimination. The cell's factory operations.</p>
+                </div>
+            </div>
+
+            <h3>2. Flowchart: Five Steps of Digestion</h3>
+            <div class="flowchart">
+                <div class="flow-step">Ingestion<br><small>Food enters mouth</small></div>
+                <div class="flow-step">Peristalsis<br><small>Muscle contractions move food</small></div>
+                <div class="flow-step">Digestion<br><small>Breaking down food</small></div>
+                <div class="flow-step">Absorption<br><small>Nutrients enter bloodstream</small></div>
+                <div class="flow-step">Elimination<br><small>Waste removal</small></div>
+            </div>
+
+            <h3>3. Key Muscles and Bones for Estheticians</h3>
+            <div class="concept-map">
+                <div class="concept-card">
+                    <h3>Frontalis Muscle</h3>
+                    <p>Raises eyebrows and creates forehead wrinkles. Important for facial expressions and anti-aging treatments.</p>
+                </div>
+                <div class="concept-card">
+                    <h3>Orbicularis Oculi</h3>
+                    <p>Closes eyes and creates crow's feet. Key area for eye treatments and wrinkle prevention.</p>
+                </div>
+                <div class="concept-card">
+                    <h3>Platysma</h3>
+                    <p>Lowers jaw and affects neck appearance. Important for neck and jawline treatments.</p>
+                </div>
+                <div class="concept-card">
+                    <h3>Cranium & Facial Bones</h3>
+                    <p>Provide structure for facial features. Understanding bone structure helps in contouring and massage techniques.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="systems" class="section">
+            <h2>🔄 Interactive Body Systems</h2>
+            <p>Click on each system to learn how it connects to esthetic practice:</p>
+            
+            <div class="system-grid">
+                <div class="system-card" onclick="showSystemInfo('integumentary')">
+                    <div class="system-icon">🛡️</div>
+                    <h3>Integumentary System</h3>
+                    <p>Protection & temperature regulation</p>
+                    <small>Skin, Hair, Nails</small>
+                </div>
+                <div class="system-card" onclick="showSystemInfo('circulatory')">
+                    <div class="system-icon">❤️</div>
+                    <h3>Circulatory System</h3>
+                    <p>Blood delivery & circulation</p>
+                    <small>Heart, Blood Vessels</small>
+                </div>
+                <div class="system-card" onclick="showSystemInfo('nervous')">
+                    <div class="system-icon">🧠</div>
+                    <h3>Nervous System</h3>
+                    <p>Coordination & sensation</p>
+                    <small>Brain, Spinal Cord, Nerves</small>
+                </div>
+                <div class="system-card" onclick="showSystemInfo('lymphatic')">
+                    <div class="system-icon">🛡️</div>
+                    <h3>Lymphatic System</h3>
+                    <p>Defense & detoxification</p>
+                    <small>Lymph Nodes, Spleen</small>
+                </div>
+                <div class="system-card" onclick="showSystemInfo('endocrine')">
+                    <div class="system-icon">⚖️</div>
+                    <h3>Endocrine System</h3>
+                    <p>Hormone regulation</p>
+                    <small>Pituitary, Thyroid, Adrenals</small>
+                </div>
+                <div class="system-card" onclick="showSystemInfo('muscular')">
+                    <div class="system-icon">💪</div>
+                    <h3>Muscular System</h3>
+                    <p>Movement & facial expressions</p>
+                    <small>Facial & Body Muscles</small>
+                </div>
+            </div>
+
+            <div id="systemInfo" class="quiz-container" style="display: none;">
+                <h3 id="systemTitle"></h3>
+                <p id="systemDescription"></p>
+                <div id="systemEsteticConnection"></div>
+            </div>
+        </div>
+
+        <div id="quiz" class="section">
+            <h2>🎯 Visual Practice Quiz</h2>
+            <div class="score-display">
+                Score: <span id="score">0</span>/10
+            </div>
+            
+            <div class="quiz-container">
+                <div class="quiz-question" id="quizQuestion">Loading question...</div>
+                <div class="quiz-options" id="quizOptions"></div>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn" style="display: none;">Next Question</button>
+            </div>
+        </div>
+
+        <div id="journal" class="section">
+            <h2>📝 Visual Reflection Journal</h2>
+            
+            <div class="journal-area">
+                <div class="journal-prompt">
+                    🎨 Visual Prompt 1: How Hormones Affect Skin
+                </div>
+                <p>Draw or describe how hormonal fluctuations (estrogen, testosterone) affect skin appearance, including acne, pigmentation, and elasticity changes.</p>
+                <textarea class="journal-input" placeholder="Describe your visual understanding of how hormones impact skin health..."></textarea>
+            </div>
+
+            <div class="journal-area">
+                <div class="journal-prompt">
+                    🔗 Visual Prompt 2: Anatomy Knowledge in Practice
+                </div>
+                <p>Create a visual representation showing how your anatomy knowledge enhances esthetic treatments. Include specific examples of how understanding facial muscles helps with massage techniques.</p>
+                <textarea class="journal-input" placeholder="Visualize and describe how anatomy knowledge improves your esthetic practice..."></textarea>
+            </div>
+
+            <div class="journal-area">
+                <div class="journal-prompt">
+                    🌟 Personal Connection: Your Learning Journey
+                </div>
+                <p>Reflect on which anatomical concepts you find most challenging and develop a personal visual study strategy for mastering them.</p>
+                <textarea class="journal-input" placeholder="What anatomical concepts challenge you most, and how can you use visual learning to master them?"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 0;
+        let score = 0;
+        let quizData = [
+            {
+                question: "Which muscle is responsible for raising the eyebrows?",
+                options: ["Frontalis", "Orbicularis Oculi", "Platysma", "Masseter"],
+                correct: 0
+            },
+            {
+                question: "What is the primary function of mitochondria?",
+                options: ["Protein synthesis", "Energy production", "Waste removal", "Genetic storage"],
+                correct: 1
+            },
+            {
+                question: "Which system includes the spleen and lymph nodes?",
+                options: ["Circulatory", "Nervous", "Lymphatic", "Endocrine"],
+                correct: 2
+            },
+            {
+                question: "The five steps of digestion end with:",
+                options: ["Absorption", "Peristalsis", "Elimination", "Ingestion"],
+                correct: 2
+            },
+            {
+                question: "Which nerve is most important for facial sensation?",
+                options: ["Facial nerve", "Trigeminal nerve", "Accessory nerve", "Optic nerve"],
+                correct: 1
+            },
+            {
+                question: "What controls entry and exit of substances in a cell?",
+                options: ["Nucleus", "Mitochondria", "Cell membrane", "Cytoplasm"],
+                correct: 2
+            },
+            {
+                question: "Which muscle creates 'crow's feet' around the eyes?",
+                options: ["Frontalis", "Orbicularis Oculi", "Platysma", "Temporalis"],
+                correct: 1
+            },
+            {
+                question: "The endocrine system regulates:",
+                options: ["Blood circulation", "Hormone production", "Muscle movement", "Sensory perception"],
+                correct: 1
+            },
+            {
+                question: "Which glands are part of the endocrine system?",
+                options: ["Sebaceous glands", "Pituitary and thyroid", "Lymph nodes", "Sweat glands"],
+                correct: 1
+            },
+            {
+                question: "What is the main function of the integumentary system?",
+                options: ["Digestion", "Protection", "Circulation", "Hormone regulation"],
+                correct: 1
+            }
+        ];
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Update progress
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const sections = ['concepts', 'systems', 'quiz', 'journal'];
+            const activeSection = document.querySelector('.section.active');
+            const currentIndex = sections.indexOf(activeSection.id);
+            const progress = ((currentIndex + 1) / sections.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showSystemInfo(systemType) {
+            const systemInfo = {
+                integumentary: {
+                    title: "Integumentary System",
+                    description: "The integumentary system is your largest organ system, consisting of skin, hair, nails, and associated glands.",
+                    connection: "As an esthetician, this is your primary focus! Understanding skin layers, sebaceous glands, and hair follicles is crucial for effective treatments, product selection, and skin analysis."
+                },
+                circulatory: {
+                    title: "Circulatory System",
+                    description: "The circulatory system transports blood, nutrients, and oxygen throughout the body via the heart and blood vessels.",
+                    connection: "Poor circulation affects skin health, causing dullness and slow healing. Facial massage techniques can improve circulation, leading to healthier, more radiant skin."
+                },
+                nervous: {
+                    title: "Nervous System",
+                    description: "The nervous system coordinates body functions and processes sensory information through the brain, spinal cord, and nerves.",
+                    connection: "Understanding facial nerves (especially trigeminal and facial nerves) is essential for safe facial treatments and avoiding nerve damage during procedures."
+                },
+                lymphatic: {
+                    title: "Lymphatic System",
+                    description: "The lymphatic system maintains fluid balance and supports immune function through lymph nodes and vessels.",
+                    connection: "Lymphatic drainage techniques help reduce puffiness and promote skin health. Understanding lymph flow patterns improves massage effectiveness and reduces inflammation."
+                },
+                endocrine: {
+                    title: "Endocrine System",
+                    description: "The endocrine system regulates body functions through hormone production and secretion from various glands.",
+                    connection: "Hormonal changes directly affect skin condition. Understanding how estrogen, testosterone, and other hormones impact skin helps you recommend appropriate treatments and products."
+                },
+                muscular: {
+                    title: "Muscular System",
+                    description: "The muscular system enables movement and maintains posture through skeletal, smooth, and cardiac muscles.",
+                    connection: "Facial muscles determine expressions and aging patterns. Knowledge of muscle anatomy helps you perform effective facial massage and understand how wrinkles form."
+                }
+            };
+
+            const info = systemInfo[systemType];
+            document.getElementById('systemTitle').textContent = info.title;
+            document.getElementById('systemDescription').textContent = info.description;
+            document.getElementById('systemEsteticConnection').innerHTML = `<strong>Esthetic Connection:</strong> ${info.connection}`;
+            document.getElementById('systemInfo').style.display = 'block';
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= quizData.length) {
+                document.getElementById('quizQuestion').innerHTML = `
+                    <h3>🎉 Quiz Complete!</h3>
+                    <p>Your final score: ${score}/${quizData.length}</p>
+                    <p>${score >= 8 ? 'Excellent work! You have a strong understanding of anatomy and physiology.' : 
+                         score >= 6 ? 'Good job! Review the concepts you missed and try again.' : 
+                         'Keep studying! Focus on the visual summaries and try the quiz again.'}</p>
+                `;
+                document.getElementById('quizOptions').innerHTML = '';
+                document.getElementById('nextBtn').style.display = 'none';
+                return;
+            }
+
+            const question = quizData[currentQuestion];
+            document.getElementById('quizQuestion').textContent = `Question ${currentQuestion + 1}: ${question.question}`;
+            
+            const optionsHtml = question.options.map((option, index) => 
+                `<div class="quiz-option" onclick="selectAnswer(${index})">${option}</div>`
+            ).join('');
+            
+            document.getElementById('quizOptions').innerHTML = optionsHtml;
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+
+        function selectAnswer(selectedIndex) {
+            const question = quizData[currentQuestion];
+            const options = document.querySelectorAll('.quiz-option');
+            
+            options.forEach((option, index) => {
+                option.style.pointerEvents = 'none';
+                if (index === question.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex) {
+                    option.classList.add('incorrect');
+                }
+            });
+            
+            if (selectedIndex === question.correct) {
+                score++;
+                document.getElementById('score').textContent = score;
+            }
+            
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        // Initialize quiz
+        loadQuestion();
+        updateProgress();
+    </script>
+</body>
+</html>
